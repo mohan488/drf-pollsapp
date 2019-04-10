@@ -3,19 +3,29 @@ from django.utils import timezone
 import datetime
 
 # Create your models here.
-class Question(models.Model):
-    question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField(blank=True,null=True)
-    created_date = models.DateTimeField(default=timezone.now)
+
+class TimeStampedModel(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    class Meta:
+        abstract = True
+
+class Track(TimeStampedModel):
+    name = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.question_text
+        return self.name
 
-class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice_text = models.CharField(max_length=200)
+class Question(TimeStampedModel):
+    question = models.CharField('Question', max_length=255)
+    idTrack = models.ForeignKey(Track, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.question
+
+class Choice(TimeStampedModel):
+    idQuestion = models.ForeignKey(Question, on_delete=models.CASCADE)
+    choice = models.CharField(max_length=50)
+    is_correct = models.BooleanField(default=False)
     votes = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.choice_text
 

@@ -15,13 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from . import routers
-from polls import views as polls_views
+# from . import routers
+# from polls import views as polls_views
 
 urlpatterns = [
-    path('', polls_views.index, name='index'),
-    path('polls/', include('polls.urls')),
-    path('api/', include(routers.SharedAPIRootRouter.router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    # path('', polls_views.index, name='index'),
+    path('', include('polls.urls')),
+    # path('api/', include(routers.SharedAPIRootRouter.router.urls)),
+    # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
 ]
